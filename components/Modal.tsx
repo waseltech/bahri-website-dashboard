@@ -7,11 +7,13 @@ export default function Modal({
   open,
   setOpen,
   title,
+  width,
   children,
 }: {
   open: boolean;
   setOpen: (isOpen: boolean) => void;
   title?: string;
+  width?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -40,7 +42,11 @@ export default function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel
+                className={`w-full ${
+                  width ? width : "max-w-lg"
+                } max-w-6xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+              >
                 <div className="flex justify-between ">
                   <Dialog.Title
                     as="h3"

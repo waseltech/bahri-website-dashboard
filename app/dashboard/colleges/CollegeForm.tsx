@@ -1,8 +1,13 @@
 "use client";
 import InputText from "@/components/InputText";
+import InputTextarea from "@/components/InputTextarea";
 import { useAppDispatch } from "@/store";
-import { createCollege, useCollege } from "@/store/college";
-import { ArrowPathIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { createCollege, updateCollege, useCollege } from "@/store/college";
+import {
+  ArrowPathIcon,
+  BookmarkSquareIcon,
+  KeyIcon,
+} from "@heroicons/react/24/outline";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
@@ -18,34 +23,56 @@ function CollegeForm({ setClose }: { setClose(close: boolean): void }) {
 
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (e: any) => {
-    const res = await dispatch(createCollege(e));
+  const { currentCollege, currentCollegeId } = useCollege();
 
-    if (res.type === "college/createCollege/fulfilled") {
-      setClose(false);
+  const onSubmit = async (e: any) => {
+    if (currentCollegeId && currentCollege) {
+      const updateres = await dispatch(
+        updateCollege({
+          id: currentCollegeId,
+          college: e,
+        })
+      );
+
+      if (updateres.type === "college/updateCollege/fulfilled") {
+        setClose(false);
+      }
+    } else {
+      const res = await dispatch(createCollege(e));
+
+      if (res.type === "college/createCollege/fulfilled") {
+        setClose(false);
+      }
     }
   };
   return (
     <Formik
-      initialValues={{ nameAr: "", nameEn: "", code: "", location: "" }}
+      initialValues={{
+        nameAr: currentCollege?.nameAr || "",
+        nameEn: currentCollege?.nameEn || "",
+        code: currentCollege?.code || "",
+        location: currentCollege?.location || "",
+      }}
       onSubmit={onSubmit}
       validationSchema={collegeSchema}
     >
       {
-        <Form className="flex flex-col items-center bg-white p-8 rounded-xl">
-          <h1 className="text-2xl font-bold text-gray-700 my-2">
+        <Form className="flex flex-col  bg-white p-8 rounded-xl">
+          {/* <h1 className="text-2xl font-bold text-gray-700 my-2">
             Add New College
-          </h1>
-          <InputText name="nameAr" type="text" placeholder="Arabic Name" />
-          <InputText name="nameEn" type="text" placeholder="English Name" />
-          <InputText name="code" type="text" placeholder="Code" />
-          <InputText name="location" type="text" placeholder="Location" />
+          </h1> */}
+          <InputText name="nameAr" placeholder="Arabic Name" />
+          <InputText name="nameEn" placeholder="English Name" />
+          <InputText name="code" placeholder="Code" />
+          <InputTextarea name="location" rows={5} placeholder="Location" />
 
-          <button type="submit" className="btn btn--primary">
-            {loading && <ArrowPathIcon className="w-5 animate-spin" />}
-            <KeyIcon className="w-5" />
-            Register
-          </button>
+          <div>
+            <button type="submit" className="btn btn--primary gap-1">
+              {loading && <ArrowPathIcon className="w-5 animate-spin" />}
+              <BookmarkSquareIcon className="w-5" />
+              Save
+            </button>
+          </div>
         </Form>
       }
     </Formik>

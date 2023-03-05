@@ -11,12 +11,23 @@ const initialState = {
   loading: false,
   colleges: [] as College[],
   error: null as null | string,
+  currentCollegeId: null as null | string,
+  currentCollege: null as null | College,
 };
 
 const collegeSlice = createSlice({
   name: "college",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentCollege: (
+      state,
+      { payload }: PayloadAction<string | null | undefined>
+    ) => {
+      state.currentCollegeId = payload || null;
+      state.currentCollege =
+        state.colleges.find(({ id }) => id === payload) || null;
+    },
+  },
   extraReducers: (builder) => {
     /**
      * -------------------------------------------------
@@ -116,5 +127,7 @@ const collegeSlice = createSlice({
     });
   },
 });
+
+export const { setCurrentCollege } = collegeSlice.actions;
 
 export const collegeReducer = collegeSlice.reducer;

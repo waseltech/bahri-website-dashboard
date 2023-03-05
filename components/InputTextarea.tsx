@@ -2,13 +2,13 @@
 import React from "react";
 import { useField } from "formik";
 
-function InputText({ label, ...props }: any) {
+function InputTextarea({ label, ...props }: any) {
   const [field, meta] = useField(props);
 
   const { error, touched } = meta;
   return (
     <>
-      <input
+      <textarea
         className="
         block
         w-full
@@ -18,9 +18,8 @@ function InputText({ label, ...props }: any) {
         focus:border-gray-500 focus:bg-white focus:ring-0"
         {...field}
         {...props}
-        type={props?.type || "text"}
       />
-      <div className="h-6">
+      <div className="h-4">
         {error && touched ? (
           <span className="text-red-600 transition transform  motion-reduce:transition-none ">
             {error}
@@ -31,4 +30,4 @@ function InputText({ label, ...props }: any) {
   );
 }
 
-export default InputText;
+export default InputTextarea;

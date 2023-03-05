@@ -2,12 +2,8 @@
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { useAppDispatch } from "@/store";
-import { deleteCollege, fetchColleges, useCollege } from "@/store/college";
-import {
-  ArrowPathIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
+import { fetchColleges, setCurrentCollege, useCollege } from "@/store/college";
+import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import Main from "../Main";
 import CollegeForm from "./CollegeForm";
@@ -16,13 +12,24 @@ import DeleteCollege from "./DeleteCollege";
 function College() {
   const dispatch = useAppDispatch();
 
-  const { colleges } = useCollege();
+  const { colleges, currentCollegeId } = useCollege();
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     (() => dispatch(fetchColleges()))();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (open === false) {
+      dispatch(setCurrentCollege(null));
+    }
+  }, [open]);
+
+  async function editCollege(id: string) {
+    setOpen(true);
+    dispatch(setCurrentCollege(id));
+  }
 
   return (
     <>
@@ -32,7 +39,7 @@ function College() {
           Add new College
         </button>
       </Header>
-      <Modal open={open} setOpen={setOpen}>
+      <Modal open={open} setOpen={setOpen} title="Add New College">
         <CollegeForm setClose={setOpen} />
       </Modal>
 
@@ -54,7 +61,13 @@ function College() {
                   <td className="p-2">{college?.nameEn}</td>
                   <td className="p-2">{college?.code}</td>
                   <td className="p-2">
-                    <div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="group"
+                        onClick={() => editCollege(college.id)}
+                      >
+                        <PencilSquareIcon className="w-6 h-6 transform transition-all group-hover:scale-110 text-gray-500 hover:text-gray-900" />
+                      </button>
                       <DeleteCollege id={college.id} />
                     </div>
                   </td>

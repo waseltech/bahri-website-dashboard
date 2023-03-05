@@ -6,6 +6,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const user = {
   name: "Tom Cook",
@@ -13,10 +14,54 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
-  { name: "Dashboard", href: "/dashboard", current: true },
-  { name: "Colleges", href: "/dashboard/colleges", current: false },
-  { name: "News", href: "/dashboard/news", current: false },
+
+type NavMenu = {
+  name: string;
+  href: string;
+  icon?: string;
+};
+
+type Navigation = {
+  name: string;
+  href: string;
+  current: boolean;
+  isMenu: boolean;
+  menus?: NavMenu[];
+};
+const navigation: Navigation[] = [
+  { name: "Dashboard", href: "/dashboard", current: false, isMenu: false },
+  {
+    name: "Colleges",
+    href: "/dashboard/colleges",
+    current: false,
+    isMenu: false,
+  },
+  { name: "News", href: "/dashboard/news", current: false, isMenu: false },
+  {
+    name: "University",
+    href: "/dashboard/university",
+    current: false,
+    isMenu: true,
+    menus: [
+      { name: "Vision Mission", href: "/dashboard/university/vision-mission" },
+      {
+        name: "Historical Background",
+        href: "/dashboard/university/historical-background",
+      },
+      {
+        name: "Fact And Figure",
+        href: "/dashboard/university/fact-and-figure",
+      },
+      {
+        name: "University Logo",
+        href: "/dashboard/university/logo",
+      },
+      {
+        name: "University Council",
+        href: "/dashboard/university/council",
+      },
+    ],
+  },
   // { name: 'Calendar', href: '#', current: false },
   // { name: 'Reports', href: '#', current: false },
 ];
@@ -31,6 +76,15 @@ function classNames(...classes: any) {
 }
 
 function Navbar() {
+  const pathname = usePathname();
+
+  const getNavigation = navigation.map((nav) => {
+    if (nav.href === pathname) return { ...nav, current: true };
+    if (nav.isMenu && pathname?.startsWith(nav.href))
+      return { ...nav, current: true };
+    return nav;
+  });
+
   return (
     <Disclosure as="nav" className="bg-brand-600">
       {({ open }) => (
@@ -49,21 +103,25 @@ function Navbar() {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-brand-900 text-white"
-                            : "text-gray-200 hover:bg-brand-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                    {getNavigation.map((item) =>
+                      item?.isMenu ? (
+                        <NavMenu key={item.name} menu={item} />
+                      ) : (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-brand-900 text-white"
+                              : "text-gray-200 hover:bg-brand-700 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -78,6 +136,7 @@ function Navbar() {
                   </button>
 
                   {/* Profile dropdown */}
+
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -198,3 +257,50 @@ function Navbar() {
 }
 
 export default Navbar;
+
+function NavMenu({ menu }: { menu: Navigation }) {
+  return (
+    <Menu as="div" className="relative ml-3">
+      <div>
+        <Menu.Button
+          className={classNames(
+            menu.current
+              ? "bg-brand-900 text-white"
+              : "text-gray-200 hover:bg-brand-700 hover:text-white",
+            "px-3 py-2 rounded-md text-sm font-medium"
+          )}
+        >
+          <span className="sr-only">Open user menu</span>
+          {menu.name}
+        </Menu.Button>
+      </div>
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          {menu.menus?.map((item) => (
+            <Menu.Item key={item.name}>
+              {({ active }) => (
+                <Link
+                  href={item.href}
+                  className={classNames(
+                    active ? "bg-gray-100" : "",
+                    "block px-4 py-2 text-sm text-gray-700"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              )}
+            </Menu.Item>
+          ))}
+        </Menu.Items>
+      </Transition>
+    </Menu>
+  );
+}
