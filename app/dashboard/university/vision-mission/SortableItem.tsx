@@ -1,5 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Bars4Icon } from "@heroicons/react/24/outline";
 
 type SortableItemProps = {
   children: React.ReactNode;
@@ -20,7 +21,8 @@ export function SortableItem({ id, children }: SortableItemProps) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <div className="m-3">{children}</div>
+      <Bars4Icon className="w-4 h-4 hover:cursor-move" />
+      {children}
     </div>
   );
 }
