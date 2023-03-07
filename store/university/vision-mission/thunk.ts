@@ -77,3 +77,23 @@ export const deleteVisionMission = createAsyncThunk(
     }
   }
 );
+
+/**
+ * -------------------------------------------------------
+ *    sort Vision Mission
+ * -------------------------------------------------------
+ */
+export const sortVisionMission = createAsyncThunk(
+  "visionMission/sortVisionMission",
+  async (sort: any): Promise<string> => {
+    try {
+      const res = await httpClient(`vision-mission/sort`, {
+        method: "POST",
+        body: { sort },
+      });
+      return res;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+);

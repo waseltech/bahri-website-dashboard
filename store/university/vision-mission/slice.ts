@@ -4,6 +4,7 @@ import {
   createVisionMission,
   deleteVisionMission,
   fetchVisionMission,
+  sortVisionMission,
   updateVisionMission,
 } from "./thunk";
 
@@ -26,6 +27,10 @@ const visionMissionSlice = createSlice({
       state.currentVisionMissionId = payload || null;
       state.currentVisionMission =
         state.visionMission.find(({ id }) => id === payload) || null;
+    },
+
+    sortItems: (state, { payload }: PayloadAction<VisionMission[]>) => {
+      state.visionMission = payload;
     },
   },
   extraReducers: (builder) => {
@@ -125,9 +130,29 @@ const visionMissionSlice = createSlice({
       state.loading = false;
       state.error = error.message || "Error";
     });
+
+    /**
+     * -------------------------------------------------
+     * soert Vision Mission
+     * -------------------------------------------------
+     */
+    builder.addCase(sortVisionMission.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(sortVisionMission.fulfilled, (state) => {
+      state.loading = false;
+      state.error = null;
+    });
+
+    builder.addCase(sortVisionMission.rejected, (state, { error }) => {
+      state.loading = false;
+      state.error = error.message || "Error";
+    });
   },
 });
 
-export const { setCurrentVisionMission } = visionMissionSlice.actions;
+export const { setCurrentVisionMission, sortItems } =
+  visionMissionSlice.actions;
 
 export const visionMissionReducer = visionMissionSlice.reducer;

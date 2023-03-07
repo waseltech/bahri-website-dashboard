@@ -4,7 +4,13 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  BellIcon,
+  ChevronDoubleDownIcon,
+  ChevronDownIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -267,11 +273,11 @@ function NavMenu({ menu }: { menu: Navigation }) {
             menu.current
               ? "bg-brand-900 text-white"
               : "text-gray-200 hover:bg-brand-700 hover:text-white",
-            "px-3 py-2 rounded-md text-sm font-medium"
+            "inline-flex px-3 gap-1 py-2 rounded-md text-sm font-medium"
           )}
         >
           <span className="sr-only">Open user menu</span>
-          {menu.name}
+          {menu.name} <ChevronDownIcon className="w-5 h-5" />
         </Menu.Button>
       </div>
       <Transition
