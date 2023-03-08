@@ -1,31 +1,39 @@
 "use client";
+import DeleteItem from "@/components/DeleteItem";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { useAppDispatch } from "@/store";
+import {
+  deleteHistoricalBackground,
+  fetchHistoricalBackground,
+  setCurrentHistoricalBackground,
+  useHistoricalBackground,
+} from "@/store/university";
 import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import Main from "../../Main";
+import HistoricalBackgroundForm from "./HistoricalBackgroundForm";
 
 function HistoricalBackground() {
   const dispatch = useAppDispatch();
 
-  // const { news } = useNews();
+  const { historicalBackground } = useHistoricalBackground();
 
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // (() => dispatch(fetchNews()))();
+    (() => dispatch(fetchHistoricalBackground()))();
   }, [dispatch]);
 
   useEffect(() => {
     if (open === false) {
-      /// dispatch(setCurrentNews(null));
+      dispatch(setCurrentHistoricalBackground(null));
     }
   }, [open]);
 
-  async function editNews(id: string) {
+  async function editHistoricalBackground(id: string) {
     setOpen(true);
-    //  dispatch(setCurrentNews(id));
+    dispatch(setCurrentHistoricalBackground(id));
   }
 
   return (
@@ -33,16 +41,16 @@ function HistoricalBackground() {
       <Header title="News">
         <button className="btn btn--primary mt-3" onClick={() => setOpen(true)}>
           <PlusIcon className="w-6 h-6" />
-          Add News
+          Add Historical Background
         </button>
       </Header>
       <Modal
         open={open}
         setOpen={setOpen}
-        title="Add New College"
+        title="Add New Historical Background"
         width="max-w-full"
       >
-        <NewsForm setClose={setOpen} />
+        <HistoricalBackgroundForm setClose={setOpen} />
       </Modal>
 
       <Main>
@@ -57,17 +65,25 @@ function HistoricalBackground() {
               </tr>
             </thead>
             <tbody className="text-sm divide-y divide-gray-300">
-              {news.map((nw, x) => (
+              {historicalBackground.map((nw, x) => (
                 <tr key={nw.id}>
                   <td className="p-2">{x + 1}</td>
                   <td className="p-2">{nw?.titleEn}</td>
                   <td className="p-2">{nw?.titleAr}</td>
                   <td className="p-2">
                     <div className="flex items-center gap-2">
-                      <button className="group" onClick={() => editNews(nw.id)}>
+                      <button
+                        className="group"
+                        onClick={() => editHistoricalBackground(nw.id)}
+                      >
                         <PencilSquareIcon className="w-6 h-6 transform transition-all group-hover:scale-110 text-gray-500 hover:text-gray-900" />
                       </button>
-                      {/* <DeleteNews id={nw.id} /> */}
+                      <DeleteItem
+                        id={nw.id}
+                        dispatchAction={() =>
+                          dispatch(deleteHistoricalBackground(nw.id))
+                        }
+                      />
                     </div>
                   </td>
                 </tr>

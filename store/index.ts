@@ -5,6 +5,7 @@ import { newsReducer } from "./news";
 import {
   visionMissionReducer,
   historicalBackgroundReducer,
+  factAndFigureReducer,
 } from "./university";
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     news: newsReducer,
     visionMission: visionMissionReducer,
     historicalBackground: historicalBackgroundReducer,
+    factAndFigure: factAndFigureReducer,
   },
   devTools: true,
 });
