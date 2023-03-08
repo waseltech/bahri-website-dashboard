@@ -11,6 +11,16 @@ export function SortableItem({ id, children }: SortableItemProps) {
   // props.id
   // JavaScript
 
+  /**
+   * "titleAr": " المعرفية الرائدة ",
+    "titleEn": " المعرفية الرائدة ",
+    "descriptionAr": "تطمح جامعة بحري إلى أن تصبح المؤسسة المعرفية الرائدة في إفريقيا والعالم العربي.",
+     "icon": "icon",
+     "seqNo": 1,
+    "descriptionEn": "تطمح جامعة بحري إلى أن تصبح المؤسسة المعرفية الرائدة في إفريقيا والعالم العربي."
+}
+   */
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -20,9 +30,15 @@ export function SortableItem({ id, children }: SortableItemProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Bars4Icon className="w-4 h-4 hover:cursor-move" />
+    <tr ref={setNodeRef} style={style}>
+      <td>
+        <Bars4Icon
+          {...attributes}
+          {...listeners}
+          className="w-4 h-4 hover:cursor-move"
+        />
+      </td>
       {children}
-    </div>
+    </tr>
   );
 }

@@ -2,13 +2,17 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { collegeReducer } from "./college";
 import { newsReducer } from "./news";
-import { visionMissionReducer } from "./university";
+import {
+  visionMissionReducer,
+  historicalBackgroundReducer,
+} from "./university";
 
 const store = configureStore({
   reducer: {
     college: collegeReducer,
     news: newsReducer,
     visionMission: visionMissionReducer,
+    historicalBackground: historicalBackgroundReducer,
   },
   devTools: true,
 });

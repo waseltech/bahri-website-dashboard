@@ -1,13 +1,18 @@
 "use client";
+import DeleteItem from "@/components/DeleteItem";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { useAppDispatch } from "@/store";
-import { fetchColleges, setCurrentCollege, useCollege } from "@/store/college";
+import {
+  deleteCollege,
+  fetchColleges,
+  setCurrentCollege,
+  useCollege,
+} from "@/store/college";
 import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import Main from "../Main";
 import CollegeForm from "./CollegeForm";
-import DeleteCollege from "./DeleteCollege";
 
 function College() {
   const dispatch = useAppDispatch();
@@ -68,7 +73,12 @@ function College() {
                       >
                         <PencilSquareIcon className="w-6 h-6 transform transition-all group-hover:scale-110 text-gray-500 hover:text-gray-900" />
                       </button>
-                      <DeleteCollege id={college.id} />
+                      <DeleteItem
+                        id={college.id}
+                        dispatchAction={() =>
+                          dispatch(deleteCollege(college.id))
+                        }
+                      />
                     </div>
                   </td>
                 </tr>

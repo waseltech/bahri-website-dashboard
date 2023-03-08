@@ -1,17 +1,22 @@
 "use client";
 import { useAppDispatch } from "@/store";
-import { deleteCollege } from "@/store/college";
 import { ArrowPathIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
-function DeleteCollege({ id }: { id: string }) {
+function DeleteItem({
+  dispatchAction,
+  id,
+}: {
+  dispatchAction(): void;
+  id: string;
+}) {
   const dispatch = useAppDispatch();
   const [idDelete, setIdDelete] = useState("");
 
   async function handleDelete(id: string) {
     if (confirm("sure you want to delete")) {
       setIdDelete(id);
-      await dispatch(deleteCollege(id));
+      await dispatchAction();
       setIdDelete("");
     }
   }
@@ -29,4 +34,4 @@ function DeleteCollege({ id }: { id: string }) {
   );
 }
 
-export default DeleteCollege;
+export default DeleteItem;
