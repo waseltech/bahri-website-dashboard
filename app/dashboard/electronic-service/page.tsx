@@ -2,15 +2,17 @@
 import DeleteItem from "@/components/DeleteItem";
 import Header from "@/components/Header";
 import Modal from "@/components/Modal";
+import { SortableItem } from "@/components/SortableItem";
 import { useAppDispatch } from "@/store";
 import {
-  deleteVisionMission,
-  fetchVisionMission,
-  setCurrentVisionMission,
-  sortItems,
-  sortVisionMission,
-  useVisionMission,
-} from "@/store/university";
+  deleteEService,
+  fetchEServices,
+  setCurrentEService,
+  sortEService,
+  sortEServices,
+  useEService,
+} from "@/store/electronic-service";
+
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -19,32 +21,29 @@ import {
 } from "@dnd-kit/sortable";
 import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
-// import { useDrag } from "react-dnd";
+import Main from "../Main";
+import EserviceForm from "./EServiceForm";
 
-import Main from "../../Main";
-import { SortableItem } from "../../../../components/SortableItem";
-import VisionForm from "./VisionForm";
-
-function VisionMission() {
+function Eservice() {
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const { visionMission, loading } = useVisionMission();
+  const { eServices, loading } = useEService();
 
   useEffect(() => {
-    dispatch(fetchVisionMission());
+    dispatch(fetchEServices());
   }, []);
 
   useEffect(() => {
     if (open === false) {
-      dispatch(setCurrentVisionMission(null));
+      dispatch(setCurrentEService(null));
     }
   }, [open]);
 
-  async function editNews(id: string) {
+  async function editEservice(id: string) {
     setOpen(true);
-    dispatch(setCurrentVisionMission(id));
+    dispatch(setCurrentEService(id));
   }
   return (
     <>
@@ -61,7 +60,7 @@ function VisionMission() {
         title="Add New College"
         width="max-w-full"
       >
-        <VisionForm setClose={setOpen} />
+        <EserviceForm setClose={setOpen} />
       </Modal>
       <Main>
         <div className="overflow-x-auto ">
@@ -80,10 +79,10 @@ function VisionMission() {
                 onDragEnd={handleDragEnd}
               >
                 <SortableContext
-                  items={visionMission}
+                  items={eServices}
                   strategy={verticalListSortingStrategy}
                 >
-                  {visionMission.map((nw, x) => (
+                  {eServices.map((nw, x) => (
                     <SortableItem key={nw.id} id={nw.id}>
                       <td className="p-2">{x + 1}</td>
                       <td className="p-2">{nw?.titleEn}</td>
@@ -91,14 +90,14 @@ function VisionMission() {
                         <div className="flex items-center gap-2">
                           <button
                             className="group"
-                            onClick={(e) => editNews(nw.id)}
+                            onClick={(e) => editEservice(nw.id)}
                           >
                             <PencilSquareIcon className="w-6 h-6 transform transition-all group-hover:scale-110 text-gray-500 hover:text-gray-900" />
                           </button>
                           <DeleteItem
                             id={nw.id}
                             dispatchAction={() =>
-                              dispatch(deleteVisionMission(nw.id))
+                              dispatch(deleteEService(nw.id))
                             }
                           />
                         </div>
@@ -121,21 +120,21 @@ function VisionMission() {
     console.log("OVER :" + over.id);
 
     if (active.id !== over.id) {
-      const activeIndex = visionMission.map((r) => r.id).indexOf(active.id);
-      const overIndex = visionMission.map((r) => r.id).indexOf(over.id);
+      const activeIndex = eServices.map((r) => r.id).indexOf(active.id);
+      const overIndex = eServices.map((r) => r.id).indexOf(over.id);
 
-      const items = arrayMove(visionMission, activeIndex, overIndex);
+      const items = arrayMove(eServices, activeIndex, overIndex);
 
-      dispatch(sortItems(items));
+      dispatch(sortEService(items));
 
       const itemsAfterSort = items.map((item, x) => ({
         id: item.id,
         seqNo: x,
       }));
 
-      dispatch(sortVisionMission(itemsAfterSort));
+      dispatch(sortEServices(itemsAfterSort));
     }
   }
 }
 
-export default VisionMission;
+export default Eservice;

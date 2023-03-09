@@ -1,4 +1,6 @@
 import Navbar from "@/components/Navbar";
+import "@/styles/remixicon.css";
+
 
 export default function DashboardLayout({
   children,

@@ -1,9 +1,11 @@
 "use client";
+import InputSelect from "@/components/InputSelect";
 import InputText from "@/components/InputText";
 import InputTextarea from "@/components/InputTextarea";
 import { useAppDispatch } from "@/store";
 import {
   createFactAndFigure,
+  FactType,
   updateFactAndFigure,
   useFactAndFigure,
 } from "@/store/university";
@@ -13,9 +15,12 @@ import React from "react";
 import * as Yup from "yup";
 
 const newsSchema = Yup.object().shape({
-  count: Yup.number().required("English title Required"),
+  count: Yup.number()
+    .typeError("count  must be a number")
+    .required("count Required"),
   descriptionAr: Yup.string().required("Arabic Description  Required"),
   descriptionEn: Yup.string().required("English Descripption Required"),
+  type: Yup.string().required("Fact Type Required"),
 });
 
 function FactAndFigureForm({ setClose }: { setClose(close: boolean): void }) {
@@ -47,9 +52,10 @@ function FactAndFigureForm({ setClose }: { setClose(close: boolean): void }) {
   return (
     <Formik
       initialValues={{
-        count: currentFactAndFigure?.count || 0,
+        count: currentFactAndFigure?.count || null,
         descriptionAr: currentFactAndFigure?.descriptionAr || "",
         descriptionEn: currentFactAndFigure?.descriptionEn || "",
+        type: currentFactAndFigure?.type || "",
       }}
       onSubmit={onSubmit}
       validationSchema={newsSchema}
@@ -59,14 +65,22 @@ function FactAndFigureForm({ setClose }: { setClose(close: boolean): void }) {
           <InputText type="number" name="count" placeholder="Count" />
           <InputTextarea
             name="descriptionAr"
-            rows={10}
-            placeholder="Arabic Content"
+            rows={5}
+            placeholder="Arabic Description"
           />
 
           <InputTextarea
             name="descriptionEn"
-            rows={10}
-            placeholder="English Content"
+            rows={5}
+            placeholder="English Description"
+          />
+
+          <InputSelect
+            options={[
+              { value: FactType.STUDENT, text: "Student" },
+              { value: FactType.STAFF, text: "Staff" },
+            ]}
+            name="type"
           />
 
           <div>

@@ -5,6 +5,7 @@ import Modal from "@/components/Modal";
 import { useAppDispatch } from "@/store";
 import {
   deleteFactAndFigure,
+  FactType,
   fetchFactAndFigure,
   setCurrentFactAndFigure,
   useFactAndFigure,
@@ -44,11 +45,7 @@ function FactAndFigure() {
           Add Fact And Figure
         </button>
       </Header>
-      <Modal
-        open={open}
-        setOpen={setOpen}
-        title="Add New Historical Background"
-      >
+      <Modal open={open} setOpen={setOpen} title="Add New Fact And Figure">
         <FactAndFigureForm setClose={setOpen} />
       </Modal>
 
@@ -60,6 +57,7 @@ function FactAndFigure() {
                 <th className="p-2 font-semibold text-left">#</th>
                 <th className="p-2 font-semibold text-left">Count</th>
                 <th className="p-2 font-semibold text-left">Description</th>
+                <th className="p-2 font-semibold text-left">Type</th>
                 <th className="p-2 font-semibold text-left">Action</th>
               </tr>
             </thead>
@@ -69,6 +67,17 @@ function FactAndFigure() {
                   <td className="p-2">{x + 1}</td>
                   <td className="p-2">{nw?.count}</td>
                   <td className="p-2">{nw?.descriptionEn}</td>
+                  <td className="p-2">
+                    {nw.type === FactType.STAFF ? (
+                      <span className="bg-blue-100 p-1 rounded-lg text-blue-600">
+                        Staff
+                      </span>
+                    ) : (
+                      <span className="bg-green-100 p-1 rounded-lg text-green-600">
+                        Student
+                      </span>
+                    )}
+                  </td>
                   <td className="p-2">
                     <div className="flex items-center gap-2">
                       <button

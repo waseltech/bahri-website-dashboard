@@ -68,7 +68,13 @@ const navigation: Navigation[] = [
       },
     ],
   },
-  // { name: 'Calendar', href: '#', current: false },
+  {
+    name: "Electronic Service",
+    href: "/dashboard/electronic-service",
+    current: false,
+    isMenu: false,
+  },
+  // { name: 'Calendar', href: '#', current: false }, electronic-service
   // { name: 'Reports', href: '#', current: false },
 ];
 const userNavigation = [

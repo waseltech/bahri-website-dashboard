@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { collegeReducer } from "./college";
+import { eServiceReducer } from "./electronic-service";
 import { newsReducer } from "./news";
 import {
   visionMissionReducer,
@@ -15,6 +16,7 @@ const store = configureStore({
     visionMission: visionMissionReducer,
     historicalBackground: historicalBackgroundReducer,
     factAndFigure: factAndFigureReducer,
+    eService: eServiceReducer,
   },
   devTools: true,
 });
