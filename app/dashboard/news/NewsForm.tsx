@@ -1,8 +1,9 @@
 "use client";
+import InputSelect from "@/components/InputSelect";
 import InputText from "@/components/InputText";
 import InputTextarea from "@/components/InputTextarea";
 import { useAppDispatch } from "@/store";
-import { createNews, updateNews, useNews } from "@/store/news";
+import { createNews, NewsTypeEnum, updateNews, useNews } from "@/store/news";
 import {
   ArrowPathIcon,
   BookmarkSquareIcon,
@@ -51,6 +52,7 @@ function NewsForm({ setClose }: { setClose(close: boolean): void }) {
         titleEn: currentNews?.titleEn || "",
         descriptionAr: currentNews?.descriptionAr || "",
         descriptionEn: currentNews?.descriptionEn || "",
+        type: currentNews?.type || NewsTypeEnum.GENERAL,
       }}
       onSubmit={onSubmit}
       validationSchema={newsSchema}
@@ -75,6 +77,20 @@ function NewsForm({ setClose }: { setClose(close: boolean): void }) {
               placeholder="English Content"
             />
           </div>
+
+          <InputSelect
+            name="type"
+            options={[
+              {
+                text: "General",
+                value: NewsTypeEnum.GENERAL,
+              },
+              {
+                text: "Academic",
+                value: NewsTypeEnum.ACADEMIC,
+              },
+            ]}
+          />
 
           <div>
             <button type="submit" className="btn btn--primary gap-1">

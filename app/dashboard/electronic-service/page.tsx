@@ -58,7 +58,7 @@ function Eservice() {
         open={open}
         setOpen={setOpen}
         title="Add New College"
-        width="max-w-full"
+        width="max-w-3xl"
       >
         <EserviceForm setClose={setOpen} />
       </Modal>
@@ -85,7 +85,16 @@ function Eservice() {
                   {eServices.map((nw, x) => (
                     <SortableItem key={nw.id} id={nw.id}>
                       <td className="p-2">{x + 1}</td>
-                      <td className="p-2">{nw?.titleEn}</td>
+                      <td className="p-2">
+                        <div className="flex items-center gap-1">
+                          {nw?.icon && (
+                            <i
+                              className={`${nw.icon} text-brand-600 text-2xl`}
+                            ></i>
+                          )}
+                          {nw?.titleEn}
+                        </div>
+                      </td>
                       <td className="p-2">
                         <div className="flex items-center gap-2">
                           <button

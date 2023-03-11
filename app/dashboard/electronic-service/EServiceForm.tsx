@@ -1,8 +1,13 @@
 "use client";
+import InputRadio from "@/components/InputRadio";
 import InputText from "@/components/InputText";
 import InputTextarea from "@/components/InputTextarea";
 import { useAppDispatch } from "@/store";
-import { useEService } from "@/store/electronic-service";
+import {
+  createEService,
+  updateEService,
+  useEService,
+} from "@/store/electronic-service";
 import {
   createVisionMission,
   updateVisionMission,
@@ -26,12 +31,18 @@ const iconList = [
   "ri-sound-module-line",
   "ri-user-2-line",
   "ri-pencil-line",
+  "ri-pie-chart-line",
+  "ri-award-line",
+  "ri-briefcase-3-line",
+  "ri-calendar-check-line",
+  "ri-stack-fill",
+  "ri-quill-pen-line",
 ];
 
 const newsSchema = Yup.object().shape({
   titleAr: Yup.string().required("Arabic title Required"),
   titleEn: Yup.string().required("English title Required"),
-  icon: Yup.string().required("icon Required"),
+  // icon: Yup.string().required("icon Required"),
 });
 
 function EserviceForm({ setClose }: { setClose(close: boolean): void }) {
@@ -42,9 +53,9 @@ function EserviceForm({ setClose }: { setClose(close: boolean): void }) {
   const onSubmit = async (e: any) => {
     if (currentEServiceId && currentEService) {
       const updateres = await dispatch(
-        updateVisionMission({
+        updateEService({
           id: currentEServiceId,
-          news: e,
+          change: e,
         })
       );
 
@@ -52,7 +63,7 @@ function EserviceForm({ setClose }: { setClose(close: boolean): void }) {
         setClose(false);
       }
     } else {
-      const res = await dispatch(createVisionMission(e));
+      const res = await dispatch(createEService(e));
 
       if (res.type === "eService/createEService/fulfilled") {
         setClose(false);
@@ -69,16 +80,29 @@ function EserviceForm({ setClose }: { setClose(close: boolean): void }) {
       onSubmit={onSubmit}
       validationSchema={newsSchema}
     >
-      {
+      {({ values }) => (
         <Form className="flex flex-col gap-4">
           <InputText name="titleAr" placeholder="Arabic Title" />
           <InputText name="titleEn" placeholder="English Title" />
 
           <div>
-            <div className="flex flex-wrap gap-4">
-              {iconList.map((icon) => (
-                <i className={`${icon} ri-3x bg-gray-100 p-2 rounded-full`}></i>
-              ))}
+            <div className="flex flex-col  items-center justify-center bg-gray-100 p-5">
+              <div className="mx-auto max-w-6xl px-12">
+                <div className="flex flex-wrap gap-3">
+                  {iconList.map((icon) => (
+                    <InputRadio
+                      key={icon}
+                      name="icon"
+                      value={icon}
+                      checked={
+                        icon == currentEService?.icon || values?.icon == icon
+                      }
+                    >
+                      <i className={`${icon} text-2xl`}></i>
+                    </InputRadio>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
           <div>
@@ -89,7 +113,7 @@ function EserviceForm({ setClose }: { setClose(close: boolean): void }) {
             </button>
           </div>
         </Form>
-      }
+      )}
     </Formik>
   );
 }

@@ -54,8 +54,8 @@ function News() {
             <thead className="text-xs font-semibold uppercase text-gray-600 bg-gray-100">
               <tr>
                 <th className="p-2 font-semibold text-left">#</th>
-                <th className="p-2 font-semibold text-left">Name</th>
-                <th className="p-2 font-semibold text-left">Code</th>
+                <th className="p-2 font-semibold text-left">Title</th>
+                <th className="p-2 font-semibold text-left">Type</th>
                 <th className="p-2 font-semibold text-left">Action</th>
               </tr>
             </thead>
@@ -64,7 +64,7 @@ function News() {
                 <tr key={nw.id}>
                   <td className="p-2">{x + 1}</td>
                   <td className="p-2">{nw?.titleEn}</td>
-                  <td className="p-2">{nw?.titleAr}</td>
+                  <td className="p-2">{nw?.type}</td>
                   <td className="p-2">
                     <div className="flex items-center gap-2">
                       <button className="group" onClick={() => editNews(nw.id)}>
