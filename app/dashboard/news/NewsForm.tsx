@@ -1,4 +1,5 @@
 "use client";
+import InputFile from "@/components/InputFile";
 import InputSelect from "@/components/InputSelect";
 import InputText from "@/components/InputText";
 import InputTextarea from "@/components/InputTextarea";
@@ -18,6 +19,7 @@ const newsSchema = Yup.object().shape({
   titleEn: Yup.string().required("English title Required"),
   descriptionAr: Yup.string().required("Arabic Description  Required"),
   descriptionEn: Yup.string().required("English Descripption Required"),
+  // images: Yup.array().min(1, "image require "),
 });
 
 function NewsForm({ setClose }: { setClose(close: boolean): void }) {
@@ -53,11 +55,12 @@ function NewsForm({ setClose }: { setClose(close: boolean): void }) {
         descriptionAr: currentNews?.descriptionAr || "",
         descriptionEn: currentNews?.descriptionEn || "",
         type: currentNews?.type || NewsTypeEnum.GENERAL,
+        images: currentNews?.images || [],
       }}
       onSubmit={onSubmit}
       validationSchema={newsSchema}
     >
-      {
+      {({ setValues, values }) => (
         <Form className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
             <InputText name="titleAr" placeholder="Arabic Title" />
@@ -92,6 +95,10 @@ function NewsForm({ setClose }: { setClose(close: boolean): void }) {
             ]}
           />
 
+          <InputFile
+            onUpload={(url) => setValues({ ...values, images: [url] })}
+          />
+
           <div>
             <button type="submit" className="btn btn--primary gap-1">
               {loading && <ArrowPathIcon className="w-5 animate-spin" />}
@@ -100,7 +107,7 @@ function NewsForm({ setClose }: { setClose(close: boolean): void }) {
             </button>
           </div>
         </Form>
-      }
+      )}
     </Formik>
   );
 }

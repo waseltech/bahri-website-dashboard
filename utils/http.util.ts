@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:4000/api/";
+const baseUrl = "https://website-api-le8m.onrender.com/api/";
+
+export const uploadFileUrl = "https://upload-service.onrender.com/";
 
 export interface HttpRequestOptions {
   method?: string;
@@ -25,7 +27,25 @@ export const httpClient = async (url: string, options?: HttpRequestOptions) => {
     );
   }
 
-  console.log(data);
+  return Promise.resolve(data);
+};
+
+export const uploadSingleFile = async (file: File) => {
+  const fd = new FormData();
+
+  fd.append("file", file);
+  const response = await fetch(uploadFileUrl + "upload", {
+    method: "POST",
+    body: fd,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return Promise.reject(
+      data?.errors?.map((r: any) => r.message)?.toString() || "server error"
+    );
+  }
 
   return Promise.resolve(data);
 };

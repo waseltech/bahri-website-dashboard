@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Modal from "@/components/Modal";
 import { useAppDispatch } from "@/store";
 import { fetchNews, setCurrentNews, useNews } from "@/store/news";
+import { uploadFileUrl } from "@/utils/http.util";
 import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import Main from "../Main";
@@ -43,7 +44,7 @@ function News() {
         open={open}
         setOpen={setOpen}
         title="Add New College"
-        width="max-w-full"
+        width="max-w-7xl"
       >
         <NewsForm setClose={setOpen} />
       </Modal>
@@ -54,6 +55,7 @@ function News() {
             <thead className="text-xs font-semibold uppercase text-gray-600 bg-gray-100">
               <tr>
                 <th className="p-2 font-semibold text-left">#</th>
+                <th className="p-2 font-semibold text-left">Image</th>
                 <th className="p-2 font-semibold text-left">Title</th>
                 <th className="p-2 font-semibold text-left">Type</th>
                 <th className="p-2 font-semibold text-left">Action</th>
@@ -63,6 +65,15 @@ function News() {
               {news.map((nw, x) => (
                 <tr key={nw.id}>
                   <td className="p-2">{x + 1}</td>
+                  <td className="p-2">
+                    {nw?.images && nw.images.length > 0 && (
+                      <img
+                        className="w-12 h-12 rounded-full"
+                        src={uploadFileUrl + nw.images[0]}
+                        alt="image"
+                      />
+                    )}
+                  </td>
                   <td className="p-2">{nw?.titleEn}</td>
                   <td className="p-2">{nw?.type}</td>
                   <td className="p-2">
