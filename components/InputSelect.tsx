@@ -22,7 +22,9 @@ function InputSelect({ options = [], label, ...props }: any) {
       >
         {options && options?.length ? (
           options.map((opt: any) => (
-            <option value={opt.value}>{opt.text}</option>
+            <option key={opt.value} value={opt.value}>
+              {opt.text}
+            </option>
           ))
         ) : (
           <option value=""></option>
