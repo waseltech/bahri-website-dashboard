@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { collegeReducer } from "./college";
+import { contactReducer } from "./contact";
 import { eServiceReducer } from "./electronic-service";
 import { newsReducer } from "./news";
+import { relatedSiteReducer } from "./related-site";
 import {
   visionMissionReducer,
   historicalBackgroundReducer,
@@ -17,6 +19,8 @@ const store = configureStore({
     historicalBackground: historicalBackgroundReducer,
     factAndFigure: factAndFigureReducer,
     eService: eServiceReducer,
+    relatedSite: relatedSiteReducer,
+    contact: contactReducer,
   },
   devTools: true,
 });

@@ -1,4 +1,5 @@
-const baseUrl = "https://website-api-le8m.onrender.com/api/";
+// const baseUrl = "https://website-api-le8m.onrender.com/api/";
+const baseUrl = "http://localhost:4000/api/";
 
 export const uploadFileUrl = "https://upload-service.onrender.com/";
 
@@ -46,6 +47,10 @@ export const uploadSingleFile = async (file: File) => {
       data?.errors?.map((r: any) => r.message)?.toString() || "server error"
     );
   }
-
   return Promise.resolve(data);
 };
+
+export interface Translate {
+  en: string;
+  ar: string;
+}

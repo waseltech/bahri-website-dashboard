@@ -74,8 +74,20 @@ const navigation: Navigation[] = [
     current: false,
     isMenu: false,
   },
-  // { name: 'Calendar', href: '#', current: false }, electronic-service
-  // { name: 'Reports', href: '#', current: false },
+
+  {
+    name: "Related Site",
+    href: "/dashboard/related-site",
+    current: false,
+    isMenu: false,
+  },
+
+  {
+    name: "Contact",
+    href: "/dashboard/contact",
+    current: false,
+    isMenu: false,
+  },
 ];
 const userNavigation = [
   { name: "Your Profile", href: "#" },
